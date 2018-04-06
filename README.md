@@ -1,3 +1,3 @@
-# The Majesty of Vue.js 2
+#The Majesty of Vue.js 2
 
-* homework from the book *
+*homework from the book*
