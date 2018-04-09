@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://unpkg.com/vue"></script>
+    <link rel="stylesheet" href="bootstrap-4.0.0-dist/css/bootstrap.min.css">
+    <title>Chapter4</title>
+</head>
+<body>
+    <div class="container">
+        <h1>This is me!</h1>
+        <ul class="list-group">
+            <li class="list-group-item" v-for="(value, key, index) in me">
+                {{index}}: {{key}} = {{value}}
+            </li>
+        </ul>
+    </div>
+    <script>
+        var data = {me: {name:"Mila", height: '1.65cm', weight: '56kg', eyeColor: "grey", favoriteFood: "kebab"}};
+
+        new Vue({
+            el: '.container',
+            data: data
+        })
+    </script>
+    
+</body>
+</html>
