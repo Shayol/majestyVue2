@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://unpkg.com/vue"></script>
+    <link rel="stylesheet" href="bootstrap-4.0.0-dist/css/bootstrap.min.css">
+    <title>Chapter4</title>
+</head>
+<body>
+    <div class="container">
+        <h1>People of Vue</h1>
+        <ul class="list-group">
+            <li class="list-group-item" v-for="item in mayors">
+                {{item.name}} {{item.votes}} <button class="btn btn-primary" @click="item.votes++">Vote</button> 
+            </li>
+        </ul>
+        <input type="text" placeholder="press 'delete' to reset" class="form-control" name="input" @keyup.delete="reset">
+        <h1>Our mayor is {{currentMayor}}</h1>
+    </div>
+    <script>
+        var data = {mayors: [{name: "Mr. Black", votes: 146},{name: "Mr. Pink", votes: 145},
+                    {name: "Mr. White", votes: 135}, {name: "Mr. Brown", votes: 130} ]};
+
+        new Vue({
+            el: '.container',
+            data: data,
+            methods: {
+                reset: function() {
+                    this.mayors.map(item => item.votes = 0);
+                }
+            },
+            computed: {
+                currentMayor: function() {
+                    var copy = this.mayors.map(item => item);
+                    copy = copy.sort((a,b) => b.votes - a.votes);
+                    return copy[0].name;
+                }
+            }
+        })
+    </script>
+    
+</body>
+</html>
