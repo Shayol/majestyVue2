@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://unpkg.com/vue"></script>
+    <link rel="stylesheet" href="bootstrap-4.0.0-dist/css/bootstrap.min.css">
+    <title>Chapter4</title>
+</head>
+
+<body>
+    <div class="container">
+        <h1>People of Gaul</h1>
+        <ul class="list-group">
+            <li class="list-group-item" v-for="person in peopleByAge">
+                {{ person | info }}
+            </li>
+        </ul>
+        <h1>"Old" people of Gaul</h1>
+        <ul class="list-group">
+            <li class="list-group-item" v-for="person in old">
+                {{ person | info }}
+            </li>
+        </ul>
+    </div>
+    <script>
+        var data = {
+            people: [{ name: "Obelix", age: 31 }, { name: "Asterix", age: 99 },
+            { name: "Julius Caesar", age: 56 }, { name: "Majestix", age: 78 }]
+        };
+
+        Vue.filter('info', person => person.name + " " + person.age);
+
+        new Vue({
+            el: '.container',
+            data: data,
+            computed: {
+                peopleByAge: function () {
+                    return this.people.sort((a, b) => a.age - b.age);
+                },
+                old: function () {
+                    return this.people.filter((person) => person.age > 65);
+                }
+            }
+        })
+    </script>
+
+</body>
+
+</html>
