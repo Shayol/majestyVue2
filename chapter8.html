@@ -1,0 +1,110 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://unpkg.com/vue"></script>
+    <link rel="stylesheet" href="bootstrap-4.0.0-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css" integrity="sha384-+d0P83n9kaQMCwj8F4RJB66tzIwOKmrdb46+porD/OvrJ+37WqIM7UoBtwHO6Nlg"
+        crossorigin="anonymous">
+    <title>Hello Vue</title>
+</head>
+
+<body>
+    <div id="app">
+        <div class="container">
+            <h1>Chariot shopping</h1>
+            <ul class="list-group">
+                <chariot v-for="chariot in chariots" :chariot="chariot" :current-chariot="currentChariot" :picked="picked">
+                </chariot>
+            </ul>
+            <pre>{{ $data }}</pre>
+        </div>
+    </div>
+    <template id="chariot-template">
+        <li class="list-group-item">
+            <p>
+                "{{chariot.name}}" has {{chariot.horses}} horse(s)!.
+            </p>
+            <button :disabled="isCurrent" @click="updateCurrentChariot" class="btn btn-primary">
+                <template v-if="picked">
+                    <span v-show="isCurrent">
+                        Riding!
+                    </span>
+                    <span v-show="!isCurrent&&moreHorses">
+                        Hire Horses
+                    </span>
+                    <span v-show="!isCurrent&&!moreHorses">
+                        Dismiss Horses
+                    </span>
+                </template>
+                <span v-show="!picked">
+                    Pick Chariot
+                </span>
+            </button>
+
+        </li>
+    </template>
+</body>
+<script type="text/javascript">
+    var bus = new Vue();
+
+    Vue.component('chariot', {
+        template: "#chariot-template",
+        props: ['chariot', 'currentChariot', 'picked'],
+        methods: {
+            updateCurrentChariot: function () {
+                bus.$emit('current', this.chariot);
+            }
+        },
+
+        computed: {
+            isCurrent: function () {
+                return this.chariot == this.currentChariot;
+            },
+            moreHorses: function() {
+                return this.chariot.horses > this.currentChariot.horses;
+            }
+        }
+    });
+    new Vue({
+        el: '#app',
+        data: {
+            chariots: [
+                {
+                    name: "Olympus",
+                    horses: 4
+                },
+                {
+                    name: "Sagitta",
+                    horses: 3
+                },
+                {
+                    name: "Icarus",
+                    horses: 2
+                },
+                {
+                    name: "Abraxas",
+                    horses: 1
+                },
+            ],
+            currentChariot: {},
+            picked: false
+        },
+        methods: {
+            updateCurrentChariot: function (chariot) {
+                this.currentChariot = chariot;
+            }, 
+            updatePicked: function(chariot) {
+                this.picked = true;
+            }
+        },
+        created() {
+            bus.$on('current', this.updateCurrentChariot);
+            bus.$once('current', this.updatePicked);
+        }
+    })
+</script>
+
+</html>
